@@ -31,7 +31,7 @@ router.delete("/:kategori_id", (req, res) => {
 });
 
 router.put("/:kategori_id", (req, res, next) => {
-    const { ad, ust_kategori_id} = req.body;
+    const { ad, ust_kategori_id } = req.body;
 
     const promise = Kategoriler.findByIdAndUpdate(req.params.kategori_id, {
         ad: ad,
@@ -46,7 +46,7 @@ router.put("/:kategori_id", (req, res, next) => {
 });
 
 router.post("/ekle", (req, res, next) => {
-    const { ad, ust_kategori_id} = req.body;
+    const { ad, ust_kategori_id } = req.body;
 
     const kategori = new Kategoriler({
         ad: ad,
