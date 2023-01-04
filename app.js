@@ -8,6 +8,7 @@ const indexRouter = require("./routes/index");
 const urunlerRouter = require("./routes/urunler");
 const siparislerRouter = require("./routes/siparisler");
 const musterilerRouter = require("./routes/musterilier");
+const kategorilerRouter = require("./routes/kategoriler");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/", indexRouter);
 app.use("/api/urunler", urunlerRouter);
 app.use("/api/siparisler", siparislerRouter);
 app.use("/api/musteriler", musterilerRouter);
+app.use("/api/kategoriler", kategorilerRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
