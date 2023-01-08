@@ -8,7 +8,7 @@ const Musteriler = require('../models/Musteriler');
 
 /* GET home page. */
 router.get("/", (req, res, next) => {
-    res.render("index", { title: "Express" });
+    res.render("index", { title: "Expressa" });
 });
 
 router.post('/authentication', (req, res) => {
