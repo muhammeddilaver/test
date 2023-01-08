@@ -3,8 +3,26 @@ const router = express.Router();
 
 const Siparisler = require("../models/Siparisler");
 
-router.get("/", (req, res) => {
-    const promise = Siparisler.find({ });
+router.get("/sayfa/:sayfa", (req, res) => {
+    const siparisSayisi = 3;
+    const promise = Siparisler.aggregate([
+        {
+            $lookup: {
+                from: 'musteris',
+                localField: 'musteri_id',
+                foreignField: '_id',
+                as: 'musteri'
+            }
+        },
+        {
+            $unwind: {
+                path: '$musteri',
+                preserveNullAndEmptyArrays: true
+            }
+        }
+    ])
+    .skip((req.params.sayfa - 1 ) * siparisSayisi)
+    .limit(siparisSayisi);
     promise.then((data) => {
         res.json(data);
     }).catch((err) => {
@@ -18,6 +36,18 @@ router.get("/:siparis_id", (req, res) => {
         res.json(data);
     }).catch((err) => {
         next({ message: 'siparis yok'});
+    });
+});
+
+router.get("/musteri/:musteri_id/sayfa/:sayfa", (req, res, next) => {
+    const siparisSayisi = 3;
+    const promise = Siparisler.find({musteri_id: req.params.musteri_id})
+    .skip((req.params.sayfa - 1 ) * siparisSayisi)
+    .limit(siparisSayisi);
+    promise.then((data) => {
+        res.json(data);
+    }).catch((err) => {
+        next({ message: 'urun yok', code: 11});
     });
 });
 

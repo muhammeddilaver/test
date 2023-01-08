@@ -13,7 +13,11 @@ const kategorilerRouter = require("./routes/kategoriler");
 const app = express();
 
 const db = require("./helper/db")();
+const config = require('./config');
 
+const verifyToken = require('./middleware/verify-token');
+
+app.set('api_secret_key', config.api_secret_key);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
@@ -25,6 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/api", verifyToken);
 app.use("/api/urunler", urunlerRouter);
 app.use("/api/siparisler", siparislerRouter);
 app.use("/api/musteriler", musterilerRouter);

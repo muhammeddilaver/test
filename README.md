@@ -6,8 +6,9 @@ Node.JS Siparis Takip App
 
 |   Route   |   HTTP Verb   |   POST body   |   Description |
 |   --- |   --- |   --- |   --- |
-|   /api/urunler/ |   `GET` |   Empty |   Tüm ürünleri listele |
-|   /api/urunler/:urun_id |   `GET` |   Empty |   Bir ürünü göster |
+|   /api/urunler/sayfa/:sayfa |   `GET` |   Empty |   Tüm ürünleri listele |
+|   /api/urunler/:urun_id |   `GET` |   Empty |   Bir kategorideki ürünleri göster |
+|   /api/urunler/kategori/:kategori_id |   `GET` |   Empty |   Bir ürünü göster |
 |   /api/urunler/ekle |   `POST` |   {'ad': 'silikon', 'stok': 123, 'fiyat': 10.99, 'kategori_id': '63b4873bcdf06ac796553f19', 'aciklama': 'aciklama metni', 'durum': true} |   Ürüm ekle |
 |   /api/urunler/:urun_id |   `PUT` |   {'ad': 'silikon', 'stok': 123, 'fiyat': 10.99, 'kategori_id': '63b4873bcdf06ac796553f19', 'aciklama': 'aciklama metni', 'durum': true} |   Ürüm güncelleme |
 |   /api/urunler/:urun_id |   `DELETE` |   Empty |   Bir ürünü sil |

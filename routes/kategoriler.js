@@ -1,7 +1,9 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
 const Kategoriler = require("../models/Kategoriler");
+
 
 router.get("/", (req, res) => {
     const promise = Kategoriler.find({ });
@@ -12,12 +14,55 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:kategori_id", (req, res) => {
-    const promise = Kategoriler.findById(req.params.kategori_id);
+router.get("/:kategori_id/sayfa/:sayfa", (req, res) => {
+    const urunSayisi = 3;
+    const promise = Kategoriler.aggregate([
+        {
+            $match: {
+                '_id': mongoose.Types.ObjectId(req.params.kategori_id)
+            }
+        },
+        {
+            $lookup: {
+                from: 'uruns',
+                localField: '_id',
+                foreignField: 'kategori_id',
+                pipeline: [
+                    { $skip: (req.params.sayfa - 1 ) * urunSayisi},
+                    { $limit: urunSayisi }
+                 ],
+                as: 'urunler'
+            }
+        },
+        {
+            $unwind: {
+                path: '$urunler',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    _id: '$_id',
+                    ad: '$ad'
+                },
+                urunler: {
+                    $push: '$urunler'
+                }
+            }
+        },
+        {
+            $project: {
+                _id: '$_id._id',
+                ad: '$_id.ad',
+                urunler: '$urunler'
+            }
+        }
+    ]);
     promise.then((data) => {
         res.json(data);
     }).catch((err) => {
-        next({ message: 'kategori yok'});
+        res.json(err);
     });
 });
 
